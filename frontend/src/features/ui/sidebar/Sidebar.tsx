@@ -33,6 +33,7 @@ const Sidebar = () => {
           <div className='mt-10'>
             {menu.map(({ title, icon, activeIcon }) => (
               <div
+                key={title}
                 onClick={() => handleTabClick(title as SidebarTabTypes)}
                 className='flex items-center mb-5 cursor-pointer text-lg'
               >

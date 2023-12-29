@@ -28,6 +28,7 @@ const ReqUserPostPart = () => {
       <div className='flex space-x-14 border-t relative'>
         {tabs.map(({ tab, icon }) => (
           <div
+            key={tab}
             onClick={() => setActiveTab(tab)}
             className={`${
               activeTab === tab ? 'border-t border-black' : 'opacity-60'
