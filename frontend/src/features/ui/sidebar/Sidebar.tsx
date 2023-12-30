@@ -1,22 +1,36 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDisclosure } from '@chakra-ui/react';
 import { IoReorderThree } from 'react-icons/io5';
 
 import { SidebarTabTypes } from '../ui.types';
 import menu from './sidebar.config';
+import CreatePostModal from '../../post/CreatePostModal';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<SidebarTabTypes>('Home');
+  const {
+    isOpen: isOpenCreatePostModal,
+    onOpen: onOpenCreatePostModal,
+    onClose: onCloseCreatePostModal,
+  } = useDisclosure();
 
   const handleTabClick = (title: SidebarTabTypes) => {
     setActiveTab(title);
 
     if (title === 'Profile') {
       navigate('/profile');
-    } else if (title === 'Home') {
+    } else if (title === 'Create') {
+      onOpenCreatePostModal();
+    } else {
       navigate('/');
     }
+  };
+
+  const handleCloseCreatePostModal = () => {
+    setActiveTab('Home');
+    onCloseCreatePostModal();
   };
 
   return (
@@ -54,6 +68,11 @@ const Sidebar = () => {
           <p className='ml-5'>More</p>
         </div>
       </div>
+
+      <CreatePostModal
+        isOpen={isOpenCreatePostModal}
+        onClose={handleCloseCreatePostModal}
+      />
     </div>
   );
 };
