@@ -9,7 +9,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 
-
 @ControllerAdvice
 public class GlobalExceptions {
 

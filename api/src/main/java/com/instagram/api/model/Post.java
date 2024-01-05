@@ -25,7 +25,7 @@ public class Post {
   @Embedded
   @AttributeOverrides({
       @AttributeOverride(name = "id", column = @Column(name = "user_id")),
-      @AttributeOverride(name = "email", column = @Column(name = "user_column"))
+      @AttributeOverride(name = "email", column = @Column(name = "user_email"))
   })
   private UserDTO user;
 
