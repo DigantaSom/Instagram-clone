@@ -18,6 +18,12 @@ public class GlobalExceptions {
     return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(PostException.class)
+  public ResponseEntity<ErrorDetails> postExceptionHandler(PostException pe, WebRequest req) {
+    ErrorDetails err = new ErrorDetails(pe.getMessage(), req.getDescription(false), LocalDateTime.now());
+    return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+  }
+
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorDetails> methodArgumentNotValidException(MethodArgumentNotValidException me) {
     ErrorDetails err = new ErrorDetails(me.getBindingResult().getFieldError().getDefaultMessage(), "validation error", LocalDateTime.now());

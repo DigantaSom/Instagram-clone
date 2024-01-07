@@ -4,6 +4,8 @@ import com.instagram.api.dto.UserDTO;
 import com.instagram.api.exception.UserException;
 import com.instagram.api.model.User;
 import com.instagram.api.repository.UserRepository;
+import com.instagram.api.security.JwtTokenClaims;
+import com.instagram.api.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private JwtTokenProvider jwtTokenProvider;
 
   @Override
   public User registerUser(User user) throws UserException {
@@ -59,7 +64,16 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User findUserProfile(String token) throws UserException {
-    return null;
+    token = token.substring(7); // to get rid of "Bearer "
+    JwtTokenClaims jwtTokenClaims = jwtTokenProvider.getClaimsFromToken(token);
+    String email = jwtTokenClaims.getUsername();
+
+    Optional<User> opt =  userRepository.findByEmail(email);
+
+    if (opt.isPresent()) {
+      return opt.get();
+    }
+    throw new UserException("Invalid token");
   }
 
   @Override
