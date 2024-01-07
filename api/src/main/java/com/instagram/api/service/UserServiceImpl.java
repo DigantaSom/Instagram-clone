@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -88,6 +89,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public String followUser(Integer reqUserId, Integer followUserId) throws UserException {
+    if (Objects.equals(reqUserId, followUserId)) {
+      return "You cannot follow or unfollow yourself";
+    }
+
     // 'reqUser' wants to follow 'followUser'
     User reqUser = findUserById(reqUserId);
     User followUser = findUserById(followUserId);
@@ -117,6 +122,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public String unfollowUser(Integer reqUserId, Integer unfollowUserId) throws UserException {
+    if (Objects.equals(reqUserId, unfollowUserId)) {
+      return "You cannot follow or unfollow yourself";
+    }
+
     // 'reqUser' wants to unfollow 'unfollowUser'
     User reqUser = findUserById(reqUserId);
     User unfollowUser = findUserById(unfollowUserId);
@@ -162,7 +171,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User updateUserDetails(User existingUser, User updatedUser) throws UserException {
-    if (!updatedUser.getId().equals(existingUser.getId())) {
+    if (!Objects.equals(updatedUser.getId(), existingUser.getId())) {
       throw new UserException("You are not authorized to update this user");
     }
 

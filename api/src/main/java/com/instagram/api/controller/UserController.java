@@ -1,5 +1,6 @@
 package com.instagram.api.controller;
 
+import com.instagram.api.config.SecurityContext;
 import com.instagram.api.exception.UserException;
 import com.instagram.api.model.User;
 import com.instagram.api.response.MessageResponse;
@@ -30,9 +31,9 @@ public class UserController {
   }
 
   @GetMapping("/req")
-  public ResponseEntity<User> findUserProfileHandler(@RequestHeader("Authorization") String token) {
-    // TODO:
-    return null;
+  public ResponseEntity<User> findUserProfileHandler(@RequestHeader(SecurityContext.HEADER) String token) throws UserException {
+    User user = userService.findUserProfile(token);
+    return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
   @GetMapping("/m/{userIds}")
@@ -47,23 +48,26 @@ public class UserController {
     return new ResponseEntity<>(users, HttpStatus.OK);
   }
 
-  @PutMapping("/update")
-  public ResponseEntity<User> updateUserDetailsHandler(@RequestHeader("Authorization") String token, @RequestBody User updatedUser) {
-    // TODO:
-    return null;
+  @PutMapping("/account/edit")
+  public ResponseEntity<User> updateUserDetailsHandler(@RequestHeader(SecurityContext.HEADER) String token, @RequestBody User user) throws UserException {
+    User reqUser = userService.findUserProfile(token);
+    User updatedUser = userService.updateUserDetails(reqUser, user);
+    return new ResponseEntity<>(updatedUser, HttpStatus.OK);
   }
 
   @PutMapping("/follow/{followUserId}")
-  public ResponseEntity<MessageResponse> followUserHandler(@PathVariable Integer followUserId) {
-    // TODO:
-//    MessageResponse res = userService.followUser(123, followUserId);
-    return null;
+  public ResponseEntity<MessageResponse> followUserHandler(@RequestHeader(SecurityContext.HEADER) String token, @PathVariable Integer followUserId) throws UserException {
+    User user = userService.findUserProfile(token);
+    String message = userService.followUser(user.getId(), followUserId);
+    MessageResponse res = new MessageResponse(message);
+    return new ResponseEntity<>(res, HttpStatus.OK);
   }
 
   @PutMapping("/unfollow/{unfollowUserId}")
-  public ResponseEntity<MessageResponse> unfollowUserHandler(@PathVariable Integer unfollowUserId) {
-    // TODO:
-//    MessageResponse res = userService.unfollowUser(123, unfollowUserId);
-    return null;
+  public ResponseEntity<MessageResponse> unfollowUserHandler(@RequestHeader(SecurityContext.HEADER) String token, @PathVariable Integer unfollowUserId) throws UserException {
+    User user = userService.findUserProfile(token);
+    String message = userService.unfollowUser(user.getId(), unfollowUserId);
+    MessageResponse res = new MessageResponse(message);
+    return new ResponseEntity<>(res, HttpStatus.OK);
   }
 }
