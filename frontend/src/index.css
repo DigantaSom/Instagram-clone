@@ -12,3 +12,26 @@
 *::-webkit-scrollbar {
   width: 0 !important;
 }
+
+/* AuthPage */
+.auth-page__mobile-wallpaper {
+  background-image: url('./img/phone-slide-1.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  animation: changeBg 12s infinite;
+}
+
+@keyframes changeBg {
+  0% {
+    background-image: url('./img//phone-slide-1.png');
+  }
+  25% {
+    background-image: url('./img//phone-slide-2.png');
+  }
+  50% {
+    background-image: url('./img//phone-slide-3.png');
+  }
+  75% {
+    background-image: url('./img//phone-slide-4.png');
+  }
+}

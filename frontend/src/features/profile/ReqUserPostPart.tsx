@@ -42,8 +42,8 @@ const ReqUserPostPart = () => {
 
       <div>
         <div className='flex flex-wrap gap-4'>
-          {[1, 1, 1, 1, 1, 1].map(item => (
-            <ReqUserPostCard />
+          {[1, 1, 1, 1, 1, 1].map((item, index) => (
+            <ReqUserPostCard key={index} />
           ))}
         </div>
       </div>
